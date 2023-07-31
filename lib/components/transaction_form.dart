@@ -2,15 +2,18 @@
 
 import 'package:flutter/material.dart';
 import "package:intl/intl.dart";
+import "adaptative_button.dart";
+import "adaptative_text_field.dart";
 
 class TransactionForm extends StatefulWidget {
-
   final void Function(String, double, DateTime, String?) onSubmit;
   final String? textEdit;
   final String? valueEdit;
   final String? idEdit;
 
-  const TransactionForm(this.onSubmit, this.textEdit, this.valueEdit, this.idEdit, {super.key});
+  const TransactionForm(
+      this.onSubmit, this.textEdit, this.valueEdit, this.idEdit,
+      {super.key});
 
   @override
   State<TransactionForm> createState() => _TransactionFormState();
@@ -32,7 +35,6 @@ class _TransactionFormState extends State<TransactionForm> {
     }
 
     widget.onSubmit(title, double.parse(value), _selectedDate, widget.idEdit);
-  
   }
 
   _showDatePicker() {
@@ -50,39 +52,38 @@ class _TransactionFormState extends State<TransactionForm> {
   }
 
   @override
-
-    void initState() {
+  void initState() {
     super.initState();
     _titleController = TextEditingController(text: widget.textEdit ?? "");
     _valueController = TextEditingController(
       text: widget.valueEdit.toString(),
     );
-    }
+  }
 
   Widget build(BuildContext context) {
-    return Container(
+    return SingleChildScrollView(
       child: Card(
         elevation: 2,
         child: Padding(
-          padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+          padding: EdgeInsets.fromLTRB(
+            10,
+            10,
+            10,
+            10 + MediaQuery.of(context).viewInsets.bottom,
+          ),
           child: Column(children: <Widget>[
-            TextField(
-                controller: _titleController,
-                onSubmitted: (_) => _submitForm(),
-                decoration: InputDecoration(
-                    labelText: "Título",
-                    hintText: "Insira um título",
-                    labelStyle: TextStyle(color: Colors.black))),
-            TextFormField(
+            AdaptativeTextField(
+              label: "Titulo",
+              controller: _titleController,
+              submitForm: (_) => _submitForm(),
+            ),
+            AdaptativeTextField(
+                label: "Valor (R\$)",
                 controller: _valueController,
                 keyboardType: TextInputType.numberWithOptions(decimal: true),
-                onFieldSubmitted: (_) => _submitForm(),
-                decoration: InputDecoration(
-                    labelText: "Valor (R\$)",
-                    hintText: "Insira um valor numérico",
-                    labelStyle: TextStyle(color: Colors.black))),
+                submitForm: (_) => _submitForm(),
+               ),
             Container(
-              height: 70,
               child: Row(
                 children: [
                   ElevatedButton(
@@ -107,17 +108,20 @@ class _TransactionFormState extends State<TransactionForm> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+              padding: EdgeInsets.fromLTRB(
+                0,
+                10,
+                0,
+                10,
+              ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  ElevatedButton(
-                      onPressed: _submitForm,
-                      child: Text("Nova transação"),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Theme.of(context).secondaryHeaderColor,
-                      )),
+                  AdaptativeButton(
+                    label: "Nova transação",
+                    onPressed: _submitForm,
+                  ),
                 ],
               ),
             )

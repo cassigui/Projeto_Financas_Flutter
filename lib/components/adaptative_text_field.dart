@@ -8,6 +8,7 @@ class AdaptativeTextField extends StatelessWidget {
   final String label;
   final TextEditingController controller;
   final TextInputType keyboardType;
+  final String placeholder;
   final Function(String) submitForm;
 
   AdaptativeTextField(
@@ -15,6 +16,7 @@ class AdaptativeTextField extends StatelessWidget {
       required this.label,
       required this.controller,
       required this.submitForm,
+      required this.placeholder,
       this.keyboardType = TextInputType.text
       });
 
@@ -41,8 +43,8 @@ class AdaptativeTextField extends StatelessWidget {
             keyboardType: keyboardType,
             onFieldSubmitted: submitForm,
             decoration: InputDecoration(
-                labelText: "Valor (R\$)",
-                hintText: "Insira um valor numérico",
+                labelText: label,
+                hintText: placeholder,
                 labelStyle: TextStyle(color: Colors.black)));
   }
 }

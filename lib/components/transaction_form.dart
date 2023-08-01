@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_constructors, sort_child_properties_last, prefer_typing_uninitialized_variables
 
 import 'package:flutter/material.dart';
-import "package:intl/intl.dart";
 import "adaptative_button.dart";
+import "adaptative_date_picker.dart";
 import "adaptative_text_field.dart";
 
 class TransactionForm extends StatefulWidget {
@@ -37,20 +37,6 @@ class _TransactionFormState extends State<TransactionForm> {
     widget.onSubmit(title, double.parse(value), _selectedDate, widget.idEdit);
   }
 
-  _showDatePicker() {
-    showDatePicker(
-            context: context,
-            initialDate: DateTime.now(),
-            firstDate: DateTime(2019),
-            lastDate: DateTime.now())
-        .then((pickedDate) {
-      if (pickedDate == null) {
-        return;
-      }
-      _selectedDate = pickedDate;
-    });
-  }
-
   @override
   void initState() {
     super.initState();
@@ -73,39 +59,25 @@ class _TransactionFormState extends State<TransactionForm> {
           ),
           child: Column(children: <Widget>[
             AdaptativeTextField(
-              label: "Titulo",
+              label: "Título",
               controller: _titleController,
               submitForm: (_) => _submitForm(),
+              placeholder: "Insira um texto."
             ),
             AdaptativeTextField(
-                label: "Valor (R\$)",
-                controller: _valueController,
-                keyboardType: TextInputType.numberWithOptions(decimal: true),
-                submitForm: (_) => _submitForm(),
-               ),
-            Container(
-              child: Row(
-                children: [
-                  ElevatedButton(
-                    onPressed: _showDatePicker,
-                    child: Icon(Icons.date_range),
-                  ),
-                  Container(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Data",
-                            style: Theme.of(context).textTheme.titleMedium,
-                          ),
-                          Text(
-                              "Data: ${DateFormat("d/M/y").format(_selectedDate)}"),
-                        ],
-                      ))
-                ],
-              ),
+              label: "Valor",
+              controller: _valueController,
+              keyboardType: TextInputType.numberWithOptions(decimal: true),
+              placeholder: "Insira um valor numérico.",
+              submitForm: (_) => _submitForm(),
+            ),
+            AdaptatitveDatePicker(
+              selectedDate: _selectedDate,
+              onDateChange: (newDate) {
+                setState(() {
+                  _selectedDate = newDate;
+                });
+              },
             ),
             Padding(
               padding: EdgeInsets.fromLTRB(

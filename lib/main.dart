@@ -129,8 +129,6 @@ class _MyHomeState extends State<MyHome> {
     final mediaQuery = MediaQuery.of(context);
 
     bool isLandscape = mediaQuery.orientation == Orientation.landscape;
-    final iconList = Platform.isIOS ? Icons.refresh : Icons.list;
-    final chartIcon = Platform.isIOS ? Icons.refresh : Icons.show_chart;
 
     final actions = [
       if (isLandscape)
